@@ -25,4 +25,13 @@ public class DocumentController {
             return ResponseEntity.internalServerError().body("Failed to upload file");
         }
     }
+
+    @GetMapping("/{id}/statistics")
+    public ResponseEntity<?> getStatistics(@PathVariable("id") String documentId) {
+        try {
+            return ResponseEntity.ok(documentService.getWordStatistics(documentId));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Failed to retrieve statistics");
+        }
+    }
 }

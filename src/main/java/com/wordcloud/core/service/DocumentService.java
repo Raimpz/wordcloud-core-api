@@ -3,7 +3,10 @@ package com.wordcloud.core.service;
 import com.wordcloud.core.config.RabbitMQConfig;
 import com.wordcloud.core.dto.TextMessagePayload;
 import com.wordcloud.core.entity.Document;
+import com.wordcloud.core.entity.WordCount;
 import com.wordcloud.core.repository.DocumentRepository;
+import com.wordcloud.core.repository.WordCountRepository;
+
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,16 +16,19 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.List;
 
 @Service
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final RabbitTemplate rabbitTemplate;
+    private final WordCountRepository wordCountRepository;
 
-    public DocumentService(DocumentRepository documentRepository, RabbitTemplate rabbitTemplate) {
+    public DocumentService(DocumentRepository documentRepository, RabbitTemplate rabbitTemplate, WordCountRepository wordCountRepository) {
         this.documentRepository = documentRepository;
         this.rabbitTemplate = rabbitTemplate;
+        this.wordCountRepository = wordCountRepository;
     }
 
     public String processAndSaveDocument(MultipartFile file) throws Exception {
@@ -60,4 +66,9 @@ public class DocumentService {
 
         return uniqueId;
     }
+
+    public List<WordCount> getWordStatistics(String documentId) {
+        return wordCountRepository.findByDocumentId(documentId);
+    }
+
 }
