@@ -21,6 +21,8 @@ public class DocumentController {
             String documentId = documentService.processAndSaveDocument(file);
 
             return ResponseEntity.ok(documentId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid file: only .txt files are allowed");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Failed to upload file");
         }
