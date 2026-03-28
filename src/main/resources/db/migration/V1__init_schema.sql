@@ -10,5 +10,6 @@ CREATE TABLE word_counts (
     document_id VARCHAR(255) NOT NULL,
     word VARCHAR(255) NOT NULL,
     count INTEGER NOT NULL,
-    CONSTRAINT fk_document FOREIGN KEY(document_id) REFERENCES documents(id)
+    CONSTRAINT fk_document FOREIGN KEY(document_id) REFERENCES documents(id),
+    CONSTRAINT uq_document_word UNIQUE (document_id, word)
 );
