@@ -52,6 +52,12 @@ public class DocumentService {
         return uniqueId;
     }
 
+    public Document getDocumentStatus(String documentId) {
+        return documentRepository.findById(documentId).orElseThrow(
+            () -> new RuntimeException("Document not found: " + documentId)
+        );
+    }
+
     public List<WordCount> getWordStatistics(String documentId) {
         return wordCountRepository.findByDocumentId(documentId);
     }

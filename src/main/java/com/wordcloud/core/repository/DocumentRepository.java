@@ -13,6 +13,16 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
 
     @Modifying
     @Transactional
+    @Query(value = """
+        UPDATE documents
+        SET total_chunks = :totalChunks,
+            status = CASE WHEN processed_chunks >= :totalChunks THEN 'COMPLETED' ELSE 'PROCESSING' END
+        WHERE id = :documentId
+        """, nativeQuery = true)
+    void updateTotalChunksAndStatus(@Param("documentId") String documentId, @Param("totalChunks") int totalChunks);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE documents SET status = 'ERROR' WHERE id = :documentId", nativeQuery = true)
     void markAsError(@Param("documentId") String documentId);
 }

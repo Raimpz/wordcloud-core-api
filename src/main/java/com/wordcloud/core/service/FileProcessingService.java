@@ -77,6 +77,7 @@ public class FileProcessingService {
                 chunkCount++;
             }
 
+            documentRepository.updateTotalChunksAndStatus(documentId, chunkCount);
             log.info("Document {} queued {} chunks for processing", documentId, chunkCount);
 
         } catch (Exception e) {
@@ -84,6 +85,7 @@ public class FileProcessingService {
             documentRepository.markAsError(documentId);
         } finally {
             try {
+                log.info("Cleaning up temporary file for document {} ", documentId);
                 Files.deleteIfExists(tempFile);
             } catch (Exception ignored) {
             }

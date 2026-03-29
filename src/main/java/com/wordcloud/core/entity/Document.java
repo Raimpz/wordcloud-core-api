@@ -1,5 +1,6 @@
 package com.wordcloud.core.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -15,6 +16,12 @@ public class Document {
     private String status;
     private LocalDateTime createdAt;
 
+    @Column(name = "total_chunks")
+    private Integer totalChunks = 0;
+
+    @Column(name = "processed_chunks")
+    private Integer processedChunks = 0;
+
     public void setId(String id) {
         this.id = id;
     }
@@ -29,6 +36,14 @@ public class Document {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setTotalChunks(Integer totalChunks) {
+        this.totalChunks = totalChunks;
+    }
+
+    public void setProcessedChunks(Integer processedChunks) {
+        this.processedChunks = processedChunks;
     }
 
     public String getId() {
@@ -47,4 +62,11 @@ public class Document {
         return createdAt;
     }
 
+    public Integer getTotalChunks() {
+        return totalChunks;
+    }
+
+    public Integer getProcessedChunks() {
+        return processedChunks;
+    }
 }
