@@ -58,8 +58,11 @@ public class DocumentService {
         );
     }
 
-    public List<WordCount> getWordStatistics(String documentId) {
-        return wordCountRepository.findByDocumentId(documentId);
+    public List<WordCount> getWordStatistics(String documentId, int minCount) {
+        if (minCount <= 1) {
+            return wordCountRepository.findByDocumentId(documentId);
+        }
+        return wordCountRepository.findByDocumentIdAndCountGreaterThanEqual(documentId, minCount);
     }
 
 }
