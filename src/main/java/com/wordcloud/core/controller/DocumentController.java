@@ -82,6 +82,7 @@ public class DocumentController {
             boolean containsOnlyNumbers = trimmedWord.matches("[0-9]+");
             boolean containsPunctuation = trimmedWord.contains(".") || trimmedWord.contains(",");
             boolean exceedsMaxLength = trimmedWord.length() > MAX_WORD_LENGTH;
+            boolean isMinWordLength = trimmedWord.length() == 1;
 
             if (containsMultipleWords) {
                 return ResponseEntity.badRequest().body("Only single words are allowed for update");
@@ -97,6 +98,10 @@ public class DocumentController {
 
             if (exceedsMaxLength) {
                 return ResponseEntity.badRequest().body("Word must not exceed " + MAX_WORD_LENGTH + " characters");
+            }
+
+            if (isMinWordLength) {
+                return ResponseEntity.badRequest().body("Must contain more then 1 character");
             }
 
             return ResponseEntity.ok(wordCountService.updateWord(documentId, wordId, newWord));
